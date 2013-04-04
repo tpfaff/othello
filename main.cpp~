@@ -1,0 +1,30 @@
+#include "GameBoard.h"
+#include <iostream>
+using namespace std;
+bool getMove(int&,int&);
+bool done=false;
+int main(){
+
+  GameBoard gb;
+  Player p1("human",'X');
+  Player p2("ai",'O');
+  int x,y;
+  p1.setTurn(); //its player 1s turn
+
+  while(!done){ //game loop
+    gb.Update();
+    if(p1.getTurn()){
+      cout<<"Player 1"<<endl;
+      getMove(x,y);
+      cout<< gb.Move(x,y,p1);
+    }
+    gb.Update();
+  }
+}
+
+bool getMove(int& x,int& y){
+  cout<<"Move to what space? x y"<<endl;
+  cin>>x;
+  cin>>y;
+  
+}

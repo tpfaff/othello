@@ -1,0 +1,268 @@
+#include "GameBoard.h"
+#include "Player.h"
+#include <iostream>
+
+using namespace std;
+
+void GameBoard::Update()
+{
+  cout<<"   |0||1||2||3||4||5||6||7|"<<endl;
+
+  for(int i=0; i<8;i++){
+    cout<<"|"<<i<<"|";
+    for(int j=0; j<8; j++){
+      cout<<"|"<< board[i][j]<<"|";
+    }
+    cout<<endl;
+  }
+
+
+}
+
+bool GameBoard::Move(int y, int x,Player player)
+{
+  
+  //  if( board[x][y]!=OppositePlayer(player)){
+  // return false;
+  //}
+  //the lines above don't work in the initial state, always return false because the spaces are empty, not opposite player
+
+  if (IsValidMoveUp(x,y,player)){
+    board[y][x]=player.getSymbol();
+    ++y;
+    while(board[y][x]==OppositePlayer(player)){
+
+    board[y][x]=player.getSymbol();  //have to flip the indeces, something is configured wrong! 2d array is rows, by columns, i've got it set up backwards i think
+    ++y;
+    }
+    return true;
+  }
+  if(IsValidMoveDown(x,y,player)){
+    board[y][x]=player.getSymbol();
+    --y;
+    while(board[y][x]==OppositePlayer(player)){
+
+    board[y][x]=player.getSymbol(); //have to flip the indeces, something is configured wrong!
+    --y;
+    }
+    return true;
+  }
+  if (IsValidMoveLeft(x,y,player)){
+    board[y][x]=player.getSymbol();
+    ++x;
+    while(board[y][x]==OppositePlayer(player)){
+      board[y][x]=player.getSymbol();
+      ++x;
+    }
+    return true;
+  }
+  
+  if (IsValidMoveRight(x,y,player)){
+    board[y][x]=player.getSymbol();
+    --x;
+    while(board[y][x]==OppositePlayer(player)){
+      board[y][x]=player.getSymbol();
+      --x;
+    }
+    return true;
+  }
+  
+  if (IsValidMoveUpLeft( x,y,player)){
+    board[y][x]=player.getSymbol();
+    ++x;
+    ++y;
+    while(board[y][x]==OppositePlayer(player)){
+      board[y][x]=player.getSymbol();
+      ++x;
+      ++y;
+    }
+    return true;
+  }
+  
+  if (IsValidMoveUpRight( x,y,player)){
+    board[y][x]=player.getSymbol();
+    --x;
+    ++y;
+    while(board[y][x]==OppositePlayer(player)){
+      board[y][x]=player.getSymbol();
+      --x;
+      ++y;
+    }
+    return true;
+  }
+  /*
+  if (IsValidMoveDownLeft( x,y,player)){
+    board[y][x]=player.getSymbol();
+    ++x;
+    --y;
+    while(board[y][x]==OppositePlayer(player)){
+      board[y][x]=player.getSymbol();
+      ++x;
+      --y;
+    }
+    return true;
+  }
+
+  if (IsValidMoveDownRight( x,y,player)){
+    board[y][x]=player.getSymbol();
+    --x;
+    --y;
+    while(board[y][x]==OppositePlayer(player)){
+      board[y][x]=player.getSymbol();
+      --x;
+      --y;
+    }
+    return true;
+  }
+  */
+
+  //if (IsValidMoveDown(x,y,player)==true) return true;
+  //if (IsValidMoveDownRight(x,y,player)==true) return true;
+  //if (IsValidMoveRight(    x,y,player)==true) return true;
+  //if (IsValidMoveUpRight(  x,y,player)==true) return true;
+  return false; 
+}
+bool GameBoard::IsValidMoveUp(int x, int y, Player player)
+{
+  int b=y+1;
+  if(board[x][b]!=OppositePlayer(player)){//if one space up is you, stop
+    return false;
+  }
+ 
+  //needs the extra logic for multiple pieces in a row
+  return true;
+
+}
+bool GameBoard::IsValidMoveDown(int x,int y, Player player){
+  int b=y-1;
+  if(board[x][b]!=OppositePlayer(player)){//if one space down is you, stop
+    cout<<"what"<<endl;
+    return false;
+  }
+  //needs the extra logic for multiple pieces in a row
+  return true;
+
+}
+bool GameBoard::IsValidMoveLeft(int x, int y, Player player){
+  int a=x+1;
+  if(board[a][y]!=OppositePlayer(player)){
+    return false;
+  }
+  return true;
+}
+
+bool GameBoard::IsValidMoveRight(int x, int y, Player player){
+  int a=x-1;
+  if(board[a][y]!=OppositePlayer(player)){
+    return false;
+  }
+  return true;
+}
+
+bool GameBoard::IsValidMoveUpLeft(int x, int y, Player player){
+  int a=x+1;
+  int b=y+1;
+  if(board[a][b] != OppositePlayer(player)){
+    return false;
+  }
+  else{
+    while(board[a][b] != OppositePlayer(player)){
+      ++a;
+      ++b;
+    }
+    if(board[a][b]!=OppositePlayer(player))
+      return false;
+  }
+  return true;
+}
+
+bool GameBoard::IsValidMoveUpRight(int x, int y, Player player){
+  int a=x+1;
+  int b=y-1;
+  while(board[a][b]==OppositePlayer(player)){
+    --a;
+    ++b;
+    if((board[a][b]!=OppositePlayer(player))||(board[a][b] == '!'))
+    return false;
+  }
+  return true;
+}
+/*
+bool GameBoard::IsValidMoveDownLeft(int x, int y, Player player){
+  int a=x-1;
+  int b=y+1;
+  if(board[a][b]!=OppositePlayer(player)){
+    return false;
+  }
+  return true;
+}
+bool GameBoard::IsValidMoveDownRight(int x, int y, Player player){
+  int a=x+1;
+  int b=y+1;
+  if(board[a][b]!=OppositePlayer(player)){
+    return false;
+  }
+  return true;
+}
+*/
+
+/*
+ bool GameBoard::IsValidMoveUpLeft(int x, int y, Player player){
+   int a=x-1;
+   int b=y-1;
+   if(board[a][b]!=OppositePlayer(player)){
+     return false;
+   }
+   return true;
+ }
+ bool GameBoard::IsValidMoveUpRight(int x, int y, Player player){
+   int a=x+1;
+   int b=y-1;
+   if(board[a][b]!=OppositePlayer(player)){
+     return false;
+   }
+   return true;
+ }
+ bool GameBoard::IsValidMoveDownRight(int x, int y, Player player){
+   int a=x+1;
+   int b=y+1;
+   if(board[a][b]!=OppositePlayer(player)){
+     return false;
+   }
+   return true;
+ }
+ bool GameBoard::IsValidMoveDownLeft(int x, int y, Player player){
+   int a=x-1;
+   int b=y+1;
+   if(board[a][y]!=OppositePlayer(player)){
+     return false;
+   }
+   return true;
+ }
+*/
+
+char GameBoard::OppositePlayer(Player player){
+  switch(player.getSymbol()){
+  case 'X':
+    return 'O';
+    break;
+  case 'O':
+    return 'X';
+    break;
+  }
+}
+//void GameBoard::ValidMoves(){
+
+//}
+
+GameBoard::GameBoard(){ //sets the initial board state
+  for(int i=0; i<8;i++){
+    for(int j=0; j<8; j++){
+      board[i][j]='!';
+    }
+  }
+  board[3][3]='O';
+  board[4][3]='X';
+  board[3][4]='X';
+  board[4][4]='O';
+}

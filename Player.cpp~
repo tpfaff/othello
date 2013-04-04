@@ -1,0 +1,31 @@
+#include <iostream>
+#include "Player.h"
+using namespace std;
+
+Player::Player(string type,char symbol){
+  this->symbol=symbol;
+  if(type=="human"){
+    this->type="human";
+  }
+  else{
+    if(type=="ai"){
+      this->type="ai";
+    }
+    else{
+      cout<<"Invalid player type, choose ai or human"<<endl;
+    }
+    
+}
+}
+  string Player::getType(){
+    return type;
+  }
+  char Player::getSymbol(){
+    return symbol;
+  }
+void Player::setTurn(){
+  myTurn=true; 
+}
+bool Player::getTurn(){
+  return myTurn;
+}

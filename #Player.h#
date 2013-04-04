@@ -1,0 +1,12 @@
+#ifndef PLAYER_H
+#define PLAYER_H
+class Player{
+ private:
+  bool isAI;
+  std::string symbol;
+ public:
+  Player(std::string,std::string);
+  std::string getType();
+  std::string getSymbol();
+};
+#endif
